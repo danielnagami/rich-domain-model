@@ -25,10 +25,15 @@ namespace PaymentContext.Domain.Entities
 
         public void AddSubscription(Subscription subscription)
         {
-            foreach (var sub in Subscriptions)
-                sub.Inactivate();
+            var hasSubscriptionActive = false;
 
-            _subscriptions.Add(subscription);
+            foreach (var sub in _subscriptions)
+            {
+                if(sub.Active)
+                    hasSubscriptionActive = true;
+            }
+            if(hasSubscriptionActive)
+                AddNotification("Student.Subscriptions", "Você já tem uma assinatura ativa");
         }
     }
 }
