@@ -51,15 +51,15 @@ namespace PaymentContext.Domain.Handlers
             var student = new Student(name, document, email);
             var subscription = new Subscription(DateTime.Now.AddMonths(1));
             var payment = new BoletoPayment(
-                command.BarCode, 
-                command.BoletoNumber, 
-                command.PaidDate, 
-                command.ExpireDate, 
-                command.Total, 
-                command.TotalPaid, 
-                command.Payer, 
-                new Document(command.PayerDocument, command.PayerDocumentType), 
-                address, 
+                command.BarCode,
+                command.BoletoNumber,
+                command.PaidDate,
+                command.ExpireDate,
+                command.Total,
+                command.TotalPaid,
+                command.Payer,
+                new Document(command.PayerDocument, command.PayerDocumentType),
+                address,
                 email);
 
             // Relacionamentos
@@ -68,6 +68,10 @@ namespace PaymentContext.Domain.Handlers
 
             // Agrupar as validações
             AddNotifications(name, document, email, address, student, subscription, payment);
+
+            // Checar notificações
+            if (Invalid)
+                return new CommandResult(false, "Não foi possível realizar sua assinatura");
 
             // Salvar as infromações
             _repository.CreateSubscription(student);
@@ -81,7 +85,7 @@ namespace PaymentContext.Domain.Handlers
 
         public ICommandResult Handle(CreatePayPalSubscriptionCommand command)
         {
-             // Fail fast validation
+            // Fail fast validation
             command.Validate();
             if (command.Invalid)
             {
@@ -107,14 +111,14 @@ namespace PaymentContext.Domain.Handlers
             var student = new Student(name, document, email);
             var subscription = new Subscription(DateTime.Now.AddMonths(1));
             var payment = new PaypalPayment(
-                command.TransactionCode, 
-                command.PaidDate, 
-                command.ExpireDate, 
-                command.Total, 
-                command.TotalPaid, 
-                command.Payer, 
-                new Document(command.PayerDocument, command.PayerDocumentType), 
-                address, 
+                command.TransactionCode,
+                command.PaidDate,
+                command.ExpireDate,
+                command.Total,
+                command.TotalPaid,
+                command.Payer,
+                new Document(command.PayerDocument, command.PayerDocumentType),
+                address,
                 email);
 
             // Relacionamentos
@@ -123,6 +127,10 @@ namespace PaymentContext.Domain.Handlers
 
             // Agrupar as validações
             AddNotifications(name, document, email, address, student, subscription, payment);
+
+            // Checar notificações
+            if (Invalid)
+                return new CommandResult(false, "Não foi possível realizar sua assinatura");
 
             // Salvar as infromações
             _repository.CreateSubscription(student);
@@ -162,16 +170,16 @@ namespace PaymentContext.Domain.Handlers
             var student = new Student(name, document, email);
             var subscription = new Subscription(DateTime.Now.AddMonths(1));
             var payment = new CreditCardPayment(
-                command.CardHolderName, 
-                command.CarNumber, 
-                command.LastTransactionNumber, 
-                command.PaidDate, 
-                command.ExpireDate, 
-                command.Total, 
-                command.TotalPaid, 
-                command.Payer, 
-                new Document(command.PayerDocument, command.PayerDocumentType), 
-                address, 
+                command.CardHolderName,
+                command.CarNumber,
+                command.LastTransactionNumber,
+                command.PaidDate,
+                command.ExpireDate,
+                command.Total,
+                command.TotalPaid,
+                command.Payer,
+                new Document(command.PayerDocument, command.PayerDocumentType),
+                address,
                 email);
 
             // Relacionamentos
@@ -180,6 +188,10 @@ namespace PaymentContext.Domain.Handlers
 
             // Agrupar as validações
             AddNotifications(name, document, email, address, student, subscription, payment);
+
+            // Checar notificações
+            if (Invalid)
+                return new CommandResult(false, "Não foi possível realizar sua assinatura");
 
             // Salvar as infromações
             _repository.CreateSubscription(student);
